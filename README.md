@@ -15,7 +15,7 @@ A RESTful API built with Django and Django REST Framework to manage shared resou
 - Python
 - Django
 - Django REST Framework
-- MySQL or PostgreSQL
+- MySQL
 - Swagger for API documentation (recommended)
 
 ## 🧱 Database Models Overview
