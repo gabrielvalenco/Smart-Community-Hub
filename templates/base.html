@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hub Comunitário Inteligente{% endblock %}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+            background-color: #f8f9fa;
+        }
+        
+        .navbar {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: white !important;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: white !important;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        
+        .btn-outline-primary {
+            color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background-color: var(--light-color);
+            border-bottom: none;
+            font-weight: 600;
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: var(--light-color);
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        footer a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            color: white;
+        }
+        
+        .badge-primary {
+            background-color: var(--secondary-color);
+        }
+        
+        .badge-success {
+            background-color: #2ecc71;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary-color);
+        }
+        
+        .section-title.text-center::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding: 3rem 0;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-city me-2"></i>Hub Comunitário
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
+                            <i class="fas fa-home me-1"></i>Início
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'eventos' in request.path %}active{% endif %}" href="#eventos">
+                            <i class="fas fa-calendar-alt me-1"></i>Eventos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'servicos' in request.path %}active{% endif %}" href="#servicos">
+                            <i class="fas fa-tools me-1"></i>Serviços
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if 'recursos' in request.path %}active{% endif %}" href="#recursos">
+                            <i class="fas fa-cubes me-1"></i>Recursos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/swagger/" target="_blank">
+                            <i class="fas fa-code me-1"></i>API
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-outline-light" href="/admin/" target="_blank">
+                            <i class="fas fa-user-shield me-1"></i>Admin
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="mb-3">Hub Comunitário Inteligente</h5>
+                    <p>Conectando pessoas, recursos e serviços para criar uma comunidade mais forte e colaborativa.</p>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h5 class="mb-3">Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/">Início</a></li>
+                        <li><a href="#eventos">Eventos</a></li>
+                        <li><a href="#servicos">Serviços</a></li>
+                        <li><a href="#recursos">Recursos</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Contato</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i>contato@hubcomunitario.com.br</li>
+                        <li><i class="fas fa-phone me-2"></i>(11) 9999-9999</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>São Paulo, SP</li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Redes Sociais</h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-white fs-4"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white fs-4"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1);">
+            <div class="text-center">
+                <p class="mb-0">&copy; {% now "Y" %} Hub Comunitário Inteligente. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Entrar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Nome de usuário</label>
+                            <input type="text" class="form-control" id="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" required>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">Lembrar-me</label>
+                            </div>
+                            <a href="#" class="text-decoration-none">Esqueceu a senha?</a>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    </form>
+                    <hr>
+                    <p class="text-center mb-0">Não tem uma conta? <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal" data-bs-dismiss="modal">Cadastre-se</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal fade" id="signupModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="signupForm">
+                        <div class="mb-3">
+                            <label for="newUsername" class="form-label">Nome de usuário</label>
+                            <input type="text" class="form-control" id="newUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">Nome</label>
+                                <input type="text" class="form-control" id="firstName">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName" class="form-label">Sobrenome</label>
+                                <input type="text" class="form-control" id="lastName">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirmar Senha</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">Eu concordo com os <a href="#">Termos de Serviço</a> e <a href="#">Política de Privacidade</a></label>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
+                    </form>
+                    <hr>
+                    <p class="text-center mb-0">Já tem uma conta? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Entrar</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Login button event
+            const loginBtn = document.querySelectorAll('.login-btn');
+            if (loginBtn) {
+                loginBtn.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                        loginModal.show();
+                    });
+                });
+            }
+            
+            // Signup button event
+            const signupBtn = document.querySelectorAll('.signup-btn');
+            if (signupBtn) {
+                signupBtn.forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+                        signupModal.show();
+                    });
+                });
+            }
+            
+            // Login form submission
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Implementar lógica de login aqui
+                    alert('Funcionalidade de login será implementada com a API real');
+                    bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+                });
+            }
+            
+            // Signup form submission
+            const signupForm = document.getElementById('signupForm');
+            if (signupForm) {
+                signupForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    // Implementar lógica de cadastro aqui
+                    alert('Funcionalidade de cadastro será implementada com a API real');
+                    bootstrap.Modal.getInstance(document.getElementById('signupModal')).hide();
+                });
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

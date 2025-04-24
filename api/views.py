@@ -15,7 +15,22 @@ User = get_user_model()
 
 # Frontend view
 def index(request):
-    return render(request, 'api/index.html')
+    # Buscar eventos do banco de dados
+    events = CommunityEvent.objects.all().order_by('start_date')[:3]
+    
+    # Buscar prestadores de serviços
+    service_providers = ServiceProvider.objects.filter(is_available=True)[:3]
+    
+    # Buscar recursos disponíveis
+    resources = Resource.objects.filter(is_available=True)[:3]
+    
+    context = {
+        'events': events,
+        'service_providers': service_providers,
+        'resources': resources
+    }
+    
+    return render(request, 'index.html', context)
 
 class UserViewSet(viewsets.ModelViewSet):
     """

@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+
+{% block title %}Hub Comunitário Inteligente - Conectando nossa comunidade{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <h1 class="display-4 fw-bold mb-3">Hub Comunitário Inteligente</h1>
+                <p class="lead mb-4">Conectando pessoas, recursos e serviços para criar uma comunidade mais forte, colaborativa e sustentável.</p>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-light btn-lg signup-btn">
+                        <i class="fas fa-user-plus me-2"></i>Cadastre-se
+                    </button>
+                    <button class="btn btn-outline-light btn-lg login-btn">
+                        <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" class="img-fluid rounded-3 shadow" alt="Comunidade">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">Nossos Recursos</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title h4">Eventos Comunitários</h3>
+                        <p class="card-text">Descubra e participe de eventos locais, workshops e encontros organizados por membros da comunidade.</p>
+                        <a href="#eventos" class="btn btn-outline-primary mt-3">Ver Eventos</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title h4">Serviços Locais</h3>
+                        <p class="card-text">Encontre prestadores de serviços locais confiáveis como tutores, eletricistas, encanadores e muito mais.</p>
+                        <a href="#servicos" class="btn btn-outline-primary mt-3">Ver Serviços</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 text-center p-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-cubes"></i>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title h4">Recursos Compartilhados</h3>
+                        <p class="card-text">Reserve espaços de coworking, ferramentas, bicicletas e outros recursos compartilhados da comunidade.</p>
+                        <a href="#recursos" class="btn btn-outline-primary mt-3">Ver Recursos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Events Section -->
+<section class="py-5 bg-light" id="eventos">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Próximos Eventos</h2>
+            <a href="#" class="btn btn-primary">Ver Todos</a>
+        </div>
+        <div class="row g-4" id="eventos-container">
+            {% if events %}
+                {% for event in events %}
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">{{ event.start_date|date:"d M, Y" }}</span>
+                            <h3 class="card-title h5">{{ event.title }}</h3>
+                            <p class="card-text text-muted mb-3"><i class="fas fa-map-marker-alt me-2"></i>{{ event.location }}</p>
+                            <p class="card-text">{{ event.description|truncatechars:100 }}</p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                {% if event.is_free %}
+                                    <span class="badge bg-success">Gratuito</span>
+                                {% else %}
+                                    <span class="badge bg-primary">R$ {{ event.fee }}</span>
+                                {% endif %}
+                                <button class="btn btn-sm btn-outline-primary">Participar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>Nenhum evento disponível no momento. Crie um evento no <a href="/admin/api/communityevent/add/" class="alert-link">painel administrativo</a>.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="py-5" id="servicos">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Prestadores de Serviços</h2>
+            <a href="#" class="btn btn-primary">Ver Todos</a>
+        </div>
+        <div class="row g-4" id="servicos-container">
+            {% if service_providers %}
+                {% for provider in service_providers %}
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title h5">{{ provider.business_name }}</h3>
+                            <p class="card-text text-muted mb-3"><i class="fas fa-tag me-2"></i>{{ provider.service_type }}</p>
+                            <p class="card-text">{{ provider.description|truncatechars:100 }}</p>
+                            {% if provider.hourly_rate %}
+                                <p class="card-text fw-bold">R$ {{ provider.hourly_rate }}/hora</p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="ms-1">4.5</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary">Contatar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>Nenhum prestador de serviço disponível no momento. Adicione um no <a href="/admin/api/serviceprovider/add/" class="alert-link">painel administrativo</a>.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Resources Section -->
+<section class="py-5 bg-light" id="recursos">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="section-title mb-0">Recursos Disponíveis</h2>
+            <a href="#" class="btn btn-primary">Ver Todos</a>
+        </div>
+        <div class="row g-4" id="recursos-container">
+            {% if resources %}
+                {% for resource in resources %}
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title h5">{{ resource.name }}</h3>
+                            <p class="card-text text-muted mb-3"><i class="fas fa-tag me-2"></i>{{ resource.category }}</p>
+                            <p class="card-text">{{ resource.description|truncatechars:100 }}</p>
+                            {% if resource.hourly_rate %}
+                                <p class="card-text fw-bold">R$ {{ resource.hourly_rate }}/hora</p>
+                            {% endif %}
+                            <p class="card-text text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ resource.location }}</p>
+                        </div>
+                        <div class="card-footer bg-white border-0">
+                            <button class="btn btn-sm btn-outline-primary w-100">Reservar</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>Nenhum recurso disponível no momento. Adicione um no <a href="/admin/api/resource/add/" class="alert-link">painel administrativo</a>.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">O Que Nossa Comunidade Diz</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="card-text">"O Hub Comunitário transformou nossa vizinhança. Agora consigo encontrar serviços locais confiáveis e participar de eventos interessantes. Recomendo a todos!"</p>
+                        <div class="d-flex align-items-center mt-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" class="rounded-circle" width="50" height="50" alt="Ana Silva">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-0 fs-6">Ana Silva</h5>
+                                <p class="text-muted mb-0">Moradora</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                        </div>
+                        <p class="card-text">"Como prestador de serviços, o Hub me ajudou a encontrar novos clientes na comunidade. A plataforma é intuitiva e as reservas são fáceis de gerenciar."</p>
+                        <div class="d-flex align-items-center mt-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle" width="50" height="50" alt="Carlos Oliveira">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-0 fs-6">Carlos Oliveira</h5>
+                                <p class="text-muted mb-0">Eletricista</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                            <i class="fas fa-star text-warning"></i>
+                        </div>
+                        <p class="card-text">"Organizei um workshop através do Hub e foi um sucesso! A plataforma facilitou todo o processo de divulgação e inscrição dos participantes."</p>
+                        <div class="d-flex align-items-center mt-4">
+                            <div class="flex-shrink-0">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle" width="50" height="50" alt="Mariana Santos">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h5 class="mb-0 fs-6">Mariana Santos</h5>
+                                <p class="text-muted mb-0">Organizadora de Eventos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <h2 class="fw-bold mb-3">Pronto para se juntar à nossa comunidade?</h2>
+                <p class="lead mb-0">Cadastre-se hoje e comece a explorar todos os recursos disponíveis para você.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <button class="btn btn-light btn-lg signup-btn me-2">
+                    <i class="fas fa-user-plus me-2"></i>Cadastre-se
+                </button>
+                <button class="btn btn-outline-light btn-lg login-btn">
+                    <i class="fas fa-sign-in-alt me-2"></i>Entrar
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Este script seria substituído por chamadas reais à API em produção
+    document.addEventListener('DOMContentLoaded', function() {
+        // Aqui você adicionaria o código para buscar dados reais da API
+        console.log('Página carregada - em um ambiente de produção, aqui seriam carregados os dados da API');
+    });
+</script>
+{% endblock %}
