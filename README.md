@@ -63,7 +63,7 @@ Implemented at both model and serializer levels, including:
 ## 🚧 Setup
 
 ```bash
-git clone https://github.com/yourusername/smart-community-hub.git
+git clone https://github.com/gabrielvalenco/smart-community-hub.git
 cd smart-community-hub/backend
 pip install -r requirements.txt
 python manage.py migrate
